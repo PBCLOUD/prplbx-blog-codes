@@ -1,0 +1,79 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  demo-app
+
+  Sample SAM Template for demo-app
+Globals:
+  Function:
+    Timeout: 3
+    Tracing: Active
+  Api:
+    TracingEnabled: true
+Resources:
+  SnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: ObjectAddedTopic
+      Subscription:
+      - Protocol: email
+        Endpoint: iremca@prplbx.com
+    Metadata:
+      SamResourceId: SnsTopic
+  S3SourceBucket:
+    Type: AWS::S3::Bucket
+    Description: Creating Amazon S3 bucket from CloudFormation
+    Properties:
+      BucketName: sourcebucketfordemo
+    Metadata:
+      SamResourceId: S3SourceBucket
+  TriggeredLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: triggered_lambda_function
+      Handler: index.handler
+      Runtime: nodejs14.x
+      Architectures:
+      - x86_64
+      MemorySize: 256
+      Timeout: 30
+      Description: a lambda function that records the name of the object added to the bucket in the table
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: SampleTable
+      - SNSPublishMessagePolicy:
+          TopicName:
+            Fn::GetAtt:
+            - SnsTopic
+            - TopicName
+       Environment:
+        Variables:
+          SAMPLE_TABLE:
+            Ref: SampleTable
+          SNS_TOPIC:
+            Ref: SnsTopic
+      Events:
+        BucketTrigger:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: S3SourceBucket
+            Events: s3:ObjectCreated:*
+    Metadata:
+      SamResourceId: TriggeredLambdaFunction
+  SampleTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ObjectNameTable
+      AttributeDefinitions:
+      - AttributeName: objectname
+        AttributeType: S
+      KeySchema:
+      - AttributeName: objectname
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+    Metadata:
+      SamResourceId: SampleTable

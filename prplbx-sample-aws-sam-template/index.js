@@ -24,7 +24,7 @@ exports.handler = async function index(event, context) {
     await dynamodb.put(params).promise();
 
     const sns_params = {
-        Message: `Object is added`,
+    Message: `Object is added`,
     Subject: 'Bucket Notification',
     TopicArn: process.env.SNS_TOPIC
 }

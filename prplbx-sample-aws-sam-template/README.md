@@ -1,5 +1,7 @@
 # SAM DEMO APP
 
+![AWS SAM ARCH](https://user-images.githubusercontent.com/106579335/186344307-5fb2535d-b78b-4812-8ac1-8076eba1a055.png)
+
 This AWS SAM demo app consists of S3-triggered Lambda and SNS Topic. When an object is put in the AWS S3 bucket, the AWS Lambda function will be triggered, and writes the name of the object to the AWS DynamoDB table and then notify the action to us via email. There are source code and supported files for this app.
 
 ## Pre-Requirements

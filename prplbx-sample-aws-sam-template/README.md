@@ -1,8 +1,8 @@
-# SAM DEMO APP
+# Introduction to AWS Serverless Application Model
 
-![AWS SAM ARCH](https://user-images.githubusercontent.com/106579335/186344307-5fb2535d-b78b-4812-8ac1-8076eba1a055.png)
+![AWS SAM ARCH ](https://user-images.githubusercontent.com/42169819/186769295-c411d353-2793-44d1-8d75-83416d68c895.png)
 
-This AWS SAM demo app consists of S3-triggered Lambda and SNS Topic. When an object is put in the AWS S3 bucket, the AWS Lambda function will be triggered, and writes the name of the object to the AWS DynamoDB table and then notify the action to us via email. There are source code and supported files for this app.
+We will build a serverless app that consists of S3-triggered Lambda and SNS Topic with AWS SAM. When an object is put in the AWS S3 bucket, the AWS Lambda function will be triggered, and writes the name of the object to the AWS DynamoDB table and then notify the action to customer admin via email.
 
 ## Pre-Requirements
 - AWS CLI

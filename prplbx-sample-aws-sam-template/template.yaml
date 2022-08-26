@@ -1,9 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  demo-app
+Description: 'demo-app
 
   Sample SAM Template for demo-app
+
+  '
 Globals:
   Function:
     Timeout: 3
@@ -17,7 +18,7 @@ Resources:
       TopicName: ObjectAddedTopic
       Subscription:
       - Protocol: email
-        Endpoint: iremca@prplbx.com
+        Endpoint: test@gmail.com
     Metadata:
       SamResourceId: SnsTopic
   S3SourceBucket:
@@ -37,7 +38,8 @@ Resources:
       - x86_64
       MemorySize: 256
       Timeout: 30
-      Description: a lambda function that records the name of the object added to the bucket in the table
+      Description: a lambda function that records the name of the object added to
+        the bucket in the table
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -47,7 +49,7 @@ Resources:
             Fn::GetAtt:
             - SnsTopic
             - TopicName
-       Environment:
+      Environment:
         Variables:
           SAMPLE_TABLE:
             Ref: SampleTable
@@ -60,8 +62,22 @@ Resources:
             Bucket:
               Ref: S3SourceBucket
             Events: s3:ObjectCreated:*
+      CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-psapyvmopfpi/demo-app/9f5794fedacbd9ade90a290b6de53952
     Metadata:
       SamResourceId: TriggeredLambdaFunction
+  LambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName:
+        Fn::GetAtt:
+        - TriggeredLambdaFunction
+        - Arn
+      Principal: s3.amazonaws.com
+      SourceArn:
+        Fn::Sub: arn:aws:s3:::sourcebucketfordemo
+    Metadata:
+      SamResourceId: LambdaPermission
   SampleTable:
     Type: AWS::DynamoDB::Table
     Properties:

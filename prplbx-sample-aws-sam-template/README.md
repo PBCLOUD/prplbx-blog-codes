@@ -17,6 +17,14 @@ We will build a serverless app that consists of S3-triggered Lambda and SNS Topi
   
   It initializes a new serverless app
   
+- touch index.js
+
+  It creates index.js empty file in terminal. Fill the file with the source code.
+  
+- nano template.yaml
+  
+  Open the template.yaml to update with the demo template. Write your e-mail to SNS topic subscription endpoint section in template.
+  
 - sam build 
 
   It builds the application and makes installation dependencies and packaging according to the runtime of the relevant project. 

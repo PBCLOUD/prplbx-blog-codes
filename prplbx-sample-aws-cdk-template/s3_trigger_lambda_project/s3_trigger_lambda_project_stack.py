@@ -39,7 +39,7 @@ class S3TriggerLambdaProjectStack(Stack):
 
         # Create SNS Topic and add email subscription
         my_topic = sns.Topic(self, "cdk-topic")
-        my_topic.add_subscription(subscriptions.EmailSubscription("cagrihan@prplbx.com"))
+        my_topic.add_subscription(subscriptions.EmailSubscription("<your-email-address>"))
 
         cwd = os.getcwd()
         # Create a lambda function
